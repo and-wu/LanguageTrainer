@@ -10,6 +10,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from config_data.config import PROXY, BOT_TOKEN
 from presentation.telegram.handlers.commands import commands_router
+from presentation.telegram.middlewares.delete_prev_message import DeletePreviousMessageMiddleware
 
 
 async def start():
@@ -28,7 +29,7 @@ async def start():
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=MemoryStorage())
 
-
+    dp.message.middleware(DeletePreviousMessageMiddleware())
     dp.include_router(commands_router)
 
     try:
